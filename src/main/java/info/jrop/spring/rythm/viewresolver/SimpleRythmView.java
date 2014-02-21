@@ -23,13 +23,16 @@ public class SimpleRythmView implements View {
 		return "text/html";
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void render(Map<String, ?> model, HttpServletRequest req, HttpServletResponse resp) throws Exception {
+	public void render(Map model, HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		String root = req.getSession().getServletContext().getRealPath(ctx.getRootDirectory()) + "/";
 		File f = new File(root + name + ctx.getSuffix());
 		
 		resp.setContentType("text/html");
 		RythmEngine eng = RythmEngineFactory.getEngine(req, ctx.getRootDirectory());
+		
+		model.put("AppRoot", req.getSession().getServletContext().getContextPath());
 		String s = eng.render(f, model);
 		resp.getWriter().write(s);
 	}
